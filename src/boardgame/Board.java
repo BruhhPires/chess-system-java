@@ -38,4 +38,9 @@ public class Board {
 	public Piece piece(Position position) { // É UMA SOBRECARGA NO METODO ACIMA USANDO ARGUEMNTO POSITION/
 		return pieces[position.getRow()][position.getColumn()]; // POREM RETORNANDO PELA POSIÇÃO
 	}
+	
+	public void placePiece(Piece piece, Position position) { // METODO PEGA A MATRIZ NA POSIÇÃO DADA E ATRIBUI A PEÇA QUE FOI INFORMADA
+		pieces[position.getRow()][position.getColumn()] = piece;
+		piece.position = position; // AQUI RECEBE A POSIÇÃO INFORMADA NO METODO
+      	}
 }
