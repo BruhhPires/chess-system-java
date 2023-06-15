@@ -23,9 +23,13 @@ public class ChessMatch { // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS REGRAS
 			return mat;
 	}
 	
-	private void initialSetup() { // METODO RESPONSAVEL POR INICIAR AS POSIÇÕES DAS PEÇAS NO TABULEIRO
-		board.placePiece(new Rook(board, Color.WHITE), 	new Position(2, 1));; // INSTANCIA A PEÇA/ COR E SUA POSIÇÃO
-		board.placePiece(new King(board, Color.BLACK), new Position(0, 4)); // INSTANCIA A PEÇA/ COR E SUA POSIÇÃO
-		board.placePiece(new King(board, Color.WHITE), new Position(7, 4)); // INSTANCIA A PEÇA/ COR E SUA POSIÇÃO
+	private void placeNewPiece(char column, int row, ChessPiece piece) {
+		board.placePiece(piece, new ChessPosition(column, row).toPosition()); // ESSE METODO TRANSFORMA A FORMA DE LANÇAR O VALOR PRA MODO XADREX
+	}
+	
+	private void initialSetup() { // METODO RESPONSAVEL POR INICIAR AS POSIÇÕES DAS PEÇAS NO TABULEIRO // 
+		placeNewPiece('b' , 6 , new Rook(board, Color.WHITE)); // ESTA USANDO O METODO CRIADO ACIMA 'PLACENEWPIECE"
+		placeNewPiece('e' , 8, new King(board, Color.BLACK)); 
+		placeNewPiece('e' , 1, new King(board, Color.WHITE));
 	}
 }
