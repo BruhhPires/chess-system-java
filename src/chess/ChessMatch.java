@@ -28,6 +28,7 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 		Position source = sourcePosition.toPosition();
 		Position target = targetPosition.toPosition();
 		validateSourcePosition(source); 
+		validateTargetPosition(source,target);
 		Piece capturedPiece = makeMove(source, target);
 		return (ChessPiece)capturedPiece;
 	}
@@ -49,6 +50,11 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 		}
 	}
 	
+	private void validateTargetPosition(Position source, Position target) { 	// VALIDA SE A POSIÇÃO DE DESTINO É VALIDA DE ACORDO COM A POSSIBILIDADE DA POSIÇÃO DE PARTIDA
+		if(!board.piece(source).possibleMove(target)) {
+			throw new ChessException("The chosen piece can't move to target position"); // CASO NÃO, ACONTECE ESSA EXCEÇÃO
+		}
+	}
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); 	// ESSE METODO TRANSFORMA A FORMA DE LANÇAR O VALOR PRA MODO XADREX
 	}
