@@ -7,12 +7,22 @@ import chess.pieces.King;
 import chess.pieces.Rook;
 
 public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS REGRAS 
-	
+	private int turn;
+	private Color currentPlayer;
 	private Board board;
 	
 	public ChessMatch() {
 		board = new Board(8, 8); 												//DELEGAÇÃO TAMANHO DO TABULEIRO
+		turn = 1;																//PRIMEIRO TURNO VALE 1											
+		currentPlayer = Color.WHITE;											//PRIEMIRO TURNO INICIA COM COR BRANCA
 		initialSetup();
+	}
+	
+	public int getTurn() {
+		return turn;
+	}
+	public Color getCurrentPlayer() {
+		return currentPlayer;
 	}
 	public ChessPiece[][] getPieces(){ 											// PERCORRER A MATRIZ E FAZER UM DOWNCAST PRA CHESSPIECE
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
@@ -36,6 +46,7 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 		validateSourcePosition(source); 
 		validateTargetPosition(source,target);
 		Piece capturedPiece = makeMove(source, target);
+		nextTurn();																//CHAMA O METODO PRA TROCA O TURN E JOGADOR ANTES DE RETURNAR 
 		return (ChessPiece)capturedPiece;
 	}
 	
@@ -51,6 +62,9 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 		if(!board.thereIsAPiece(position)) {
 			throw new ChessException("There is no piece on source position");
 		}
+		if(currentPlayer != ((ChessPiece)board.piece(position)).getColor()) {	// SE O JOGADOR CORRENTE TENTAR MOVER PEÇA ADVERSARIA TRARÁ A EXCEÇÃO, USOU O DOWNCAST 
+			throw new ChessException("The chosen piece is not yours");
+		}
 		if(!board.piece(position).isThereAnyPossibleMove()) { 					// VERIFICA SE HÁ MOVIMENTOS POSSIVEIS
 			throw new ChessException("There is no possible moves for the chosen piece");
 		}
@@ -60,6 +74,11 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 		if(!board.piece(source).possibleMove(target)) {
 			throw new ChessException("The chosen piece can't move to target position"); // CASO NÃO, ACONTECE ESSA EXCEÇÃO
 		}
+	}
+	
+	private void nextTurn() {
+		turn++;																	 // TURNO VAI AUMENTANDO
+		currentPlayer=(currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;// CONDIÇÃO TERNARIA, SE FOR BRANCO VIRA PRETO CASO CONTRARIO VIRA BRANCO
 	}
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); 	// ESSE METODO TRANSFORMA A FORMA DE LANÇAR O VALOR PRA MODO XADREX
