@@ -1,9 +1,11 @@
 package application;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
-
-import javax.management.RuntimeErrorException;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import chess.ChessMatch;
 import chess.ChessPiece;
@@ -52,8 +54,10 @@ public class UI {
 			throw new InputMismatchException("Error Instantianting ChessPosition. Valid values are from a1 to h8.");
 		}
 	}
-	public static void printMatch(ChessMatch chessMatch) {  				 // IMPRIME O TABULEIRO
+	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captured) {  				// IMPRIME O TABULEIRO // USA TBM A LISTA COMO PARAMETRO
 		printBoard(chessMatch.getPieces());
+		System.out.println();
+		printCapturedPieces(captured);
 		System.out.println();
 		System.out.println("Turn: " + chessMatch.getTurn());
 		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
@@ -96,5 +100,19 @@ public class UI {
             }
         }
         System.out.print(" ");
+	}
+	
+	private static void printCapturedPieces(List<ChessPiece> captured) { 			// CRIA LISTA DAS PEÇAS CAPURADAS
+		List<ChessPiece> white = captured.stream().filter(x -> x.getColor() == Color.WHITE).collect(Collectors.toList()); // FILTRA A LISTA DE PEÇAS BRANCAS
+		List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK).collect(Collectors.toList()); // FILTRA A LISTA DE PEÇAS PRETAS
+		System.out.println("Captured pieces:");
+		System.out.print("White: ");
+		System.out.print(ANSI_WHITE);												// IMPRIME NA COR BRANCA
+		System.out.println(Arrays.toString(white.toArray())); 						// IMPRIME UM ARRAY DE VALORES NO JAVA // LIST (BRANCA)
+		System.out.print(ANSI_RESET);
+		System.out.print("Black: ");
+		System.out.print(ANSI_YELLOW);												// IMPRIME NA COR PRETA
+		System.out.println(Arrays.toString(black.toArray())); 						// IMPRIME UM ARRAY DE VALORES NO JAVA // LIST (PRETA)
+		System.out.print(ANSI_RESET);
 	}
 }

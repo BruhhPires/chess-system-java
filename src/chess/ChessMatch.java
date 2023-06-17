@@ -1,5 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
@@ -11,6 +14,9 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 	private Color currentPlayer;
 	private Board board;
 	
+	private List<Piece> piecesOnTheBoard = new ArrayList<>();
+	private List<Piece> capturedPieces = new ArrayList<>();
+
 	public ChessMatch() {
 		board = new Board(8, 8); 												//DELEGAÇÃO TAMANHO DO TABULEIRO
 		turn = 1;																//PRIMEIRO TURNO VALE 1											
@@ -54,6 +60,10 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 		Piece p = board.removePiece(source);									// RETIRA A PEÇA DA POSIÇÃO DE ORIGEM
 		Piece capturedPiece = board.removePiece(target);						// ESSA VAI SER A PEÇA CAPTURADA NA POSIÇÃO DE DESTINO
 		board.placePiece(p, target); 											// COLOCA A PEÇA P NA POSIÇÃO DE DESTINO
+		if (capturedPiece != null) {											// SE A PEÇA CAPTURADA FOR DIFERENTE DE NULO (CAPTURAR DE FATO)
+			piecesOnTheBoard.remove(capturedPiece);								// 1- REMOVE DA LISTA DE PEÇAS NO TABULEIRO
+			capturedPieces.add(capturedPiece);									// 2- ADCIONA A LISTA DE PEÇAS CAPTURADAS
+		}
 		return capturedPiece; 													// RETORNA A PEÇA CAPTURADA
 		
 	}
@@ -82,6 +92,7 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 	}
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); 	// ESSE METODO TRANSFORMA A FORMA DE LANÇAR O VALOR PRA MODO XADREX
+		piecesOnTheBoard.add(piece);											// ADCIONA NA LISTA DE PEÇAS NO TABUEIRO
 	}
 	
 	private void initialSetup() { 												// METODO RESPONSAVEL POR INICIAR AS POSIÇÕES DAS PEÇAS NO TABULEIRO // 
