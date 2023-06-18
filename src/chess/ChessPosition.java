@@ -29,7 +29,7 @@ public class ChessPosition {
 	}
 	
 	protected static ChessPosition fromPosition(Position position) { // METODO PARA CONVERSÃO MATRIX PARA XADREX
-		return new ChessPosition((char)('a' - position.getColumn()), 8 -position.getRow() ); // PRECISA USAR O CASTING PARA -- XADRE É 1º COLUNA 2º LINHA
+		return new ChessPosition((char)('a' + position.getColumn()), 8 -position.getRow() ); // PRECISA USAR O CASTING PARA -- XADRE É 1º COLUNA 2º LINHA
 	}
 	
 	@Override
