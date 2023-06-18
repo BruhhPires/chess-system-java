@@ -18,7 +18,7 @@ public class Program {
 		ChessMatch chessMatch = new ChessMatch();
 		List<ChessPiece> captured = new ArrayList<>();
 		
-		while (true) {
+		while (!chessMatch.getCheckMate()) {									// ENQUANTO NÃO ESTIVER COM CHECKMATE, QUANDO ACONTECE O CHECKMATE VAI PRO FINAL  E UI IMPRIMI A TELA
 			try {
 				UI.clearScreen();												// LIMPA O HISTORICO DO PROMPT
 				UI.printMatch(chessMatch, captured);							// IMPRIME O TABULEIRO
@@ -49,6 +49,7 @@ public class Program {
 				sc.nextLine();
 			}
 		}
-		
+		UI.clearScreen();
+		UI.printMatch(chessMatch, captured);
 	}
 }

@@ -17,6 +17,7 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 	private Color currentPlayer;
 	private Board board;
 	private boolean check;
+	private boolean checkMate;	
 	
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
@@ -36,6 +37,9 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 	}
 	public boolean getCheck() {
 		return check;
+	}
+	public boolean getCheckMate() {
+		return checkMate;
 	}
 	
 	public ChessPiece[][] getPieces(){ 											// PERCORRER A MATRIZ E FAZER UM DOWNCAST PRA CHESSPIECE
@@ -68,12 +72,16 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 		
 		check = (testCheck(opponnent(currentPlayer))) ? true : false;			// SE O OPONENT FICOU EM CHECK A PROPRIEDADE CHECK SERÁ ATUALIZADA PARA VERDADEIRA, SENÃO É FALSO
 		
+		
+		if (testCheckMate(opponnent(currentPlayer))) {							// METODO PRA VALIDAR SE O OPONENTE FICOU EM CHECKMATE
+			checkMate = true;													// SE VERDADEIRA, ACABA O JOGO
+		}
+		else {																	// SE FALSE(SAIU DO CHECK, AI VOLTA O TURNO PRA ELE
 		nextTurn();																//CHAMA O METODO PRA TROCA O TURN E JOGADOR ANTES DE RETURNAR 
+		}
 		return (ChessPiece)capturedPiece;
-		
-		
 	}
-	
+		
 	private Piece makeMove(Position source, Position target) {					// METODO MOVER A PEÇA - COMER
 		Piece p = board.removePiece(source);									// RETIRA A PEÇA DA POSIÇÃO DE ORIGEM
 		Piece capturedPiece = board.removePiece(target);						// ESSA VAI SER A PEÇA CAPTURADA NA POSIÇÃO DE DESTINO
@@ -143,6 +151,31 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 			}
 		} return false;
 	}
+	
+	private boolean testCheckMate(Color color) {
+		if (!testCheck(color)) {												// SE ESSAC COR NÃO ESTÁ EM CHECK NÃO ESTÁ EM CHECKMATE
+			return false;
+		}
+		List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList()); // PEGA UMA LISTA COM TODAS AS PEÇAS COM A COR EM QUESTÃO
+		for(Piece p: list) {													// PERCORRE ALISTA PROCURANDO ALGUMA PEÇA QUE TIRA DO CHECKMATE
+			boolean[][] mat = p.possibleMoves();								// PEGA A MATRIZ COM OS MOVIMENTOS POSSIVEIS
+				for(int i=0; i<board.getRows(); i++) {							// O FOR VAI PERCORRER AS LINHAS 
+					for (int j=0; j<board.getColumns(); j++) {					// O FOR VAI PERCORRER AS COLUNAS 
+						if (mat[i][j]) {										// SE A POSIÇÃO DA MATRIZ É UM MOVIMENTO POSSIVEL
+							Position source = ((ChessPiece)p).getChessPosition().toPosition(); // PEGA P NA POSIÇÃO DE ORIGEM COM O DOWNCAST POIS NÃO PODE PEGAR O POSITION POIS É PROTECTED
+							Position target = new Position(i, j);				// PEGA O P NA POSIÇÃO DE DESTINO
+							Piece capturedPiece = makeMove(source, target);		// CHAMA O METODO QUE FAZ O MOVIMENTO
+							boolean testCheck = testCheck(color);				// APOS O MOVIMENTO O TESTCHECK, CONFIRMA SE O REI DA COR EM QUESTÃO ESTÁ EM CHECK.
+							undoMove(source, target, capturedPiece); 			// EM SEGUIDA CHAMAMOS UNDOMOVE PRA DESFAZER A JOGADA POIS ERA APENAS UM TEST
+							if(!testCheck) {									// TESTA SE O MOVIMENTO TIROU O REI DO CHECK OU NÃO.
+								return false;
+							}
+							
+						}
+					}
+				}
+		} return true;
+	}
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); 	// ESSE METODO TRANSFORMA A FORMA DE LANÇAR O VALOR PRA MODO XADREX
 		piecesOnTheBoard.add(piece);											// ADCIONA NA LISTA DE PEÇAS NO TABUEIRO
@@ -150,18 +183,13 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 	
 	private void initialSetup() { 												// METODO RESPONSAVEL POR INICIAR AS POSIÇÕES DAS PEÇAS NO TABULEIRO // 
 																				// ESTA USANDO O METODO CRIADO ACIMA 'PLACENEWPIECE"
-		placeNewPiece('c', 1, new Rook(board, Color.WHITE));		
-        placeNewPiece('c', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('d', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('d', 1, new King(board, Color.WHITE));
+		placeNewPiece('h', 7, new Rook(board, Color.WHITE));		
+        placeNewPiece('d', 1, new Rook(board, Color.WHITE));
+        placeNewPiece('e', 1, new King(board, Color.WHITE));
+       
 
-        placeNewPiece('c', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('c', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('d', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('d', 8, new King(board, Color.BLACK));
+        placeNewPiece('b', 8, new Rook(board, Color.BLACK));
+        placeNewPiece('a', 8, new King(board, Color.BLACK));
+       
 	}
 }
