@@ -83,7 +83,8 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 	}
 		
 	private Piece makeMove(Position source, Position target) {					// METODO MOVER A PEÇA - COMER
-		Piece p = board.removePiece(source);									// RETIRA A PEÇA DA POSIÇÃO DE ORIGEM
+		ChessPiece p = (ChessPiece)board.removePiece(source);					// RETIRA A PEÇA DA POSIÇÃO DE ORIGEM
+		p.increaseMoveCount();													// AUMENTA 1 NA CONTAGEM DE JOGADA
 		Piece capturedPiece = board.removePiece(target);						// ESSA VAI SER A PEÇA CAPTURADA NA POSIÇÃO DE DESTINO
 		board.placePiece(p, target); 											// COLOCA A PEÇA P NA POSIÇÃO DE DESTINO
 		if (capturedPiece != null) {											// SE A PEÇA CAPTURADA FOR DIFERENTE DE NULO (CAPTURAR DE FATO)
@@ -95,7 +96,8 @@ public class ChessMatch {														 // CLASSE PRINCIPAL, ONDE ENCONTRA-SE AS
 	}
 	
 	private void undoMove(Position source, Position target, Piece capturedPiece) { // ESSE METODO DESFAZ A JOGADA
-		Piece p = board.removePiece(target);									   // RETIRA A PEÇA DA POSIÇÃO DE DESTINO						
+		ChessPiece p = (ChessPiece)board.removePiece(target);					   // RETIRA A PEÇA DA POSIÇÃO DE DESTINO						
+		p.decreaseMoveCount();													   // REDUZ 1 DA CONTAGEM DE JOGADA		
 		board.placePiece(p, source);											   // VOLTA A PEÇA P PARA A POSIÇÃO DE ORIGEM
 		if (capturedPiece != null) {											   // SE A PEÇA CAPTURADA FOR DIFERENTE DE NULO (CAPTURAR DE FATO)
 				board.placePiece(capturedPiece, target);							
