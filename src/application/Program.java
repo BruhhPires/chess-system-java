@@ -40,7 +40,11 @@ public class Program {
 				}
 				if(chessMatch.getPromoted() != null) {							// SE O GET PROMOTION ATIVAR O PROGRAMA VAI PEDIR QUE DIGITE A PEÇA
 					System.out.println("Enter piece for promotion (B/N/R/Q)");
-					String type = sc.nextLine();									
+					String type = sc.nextLine().toUpperCase();									
+					while (!type.equals("B") && !type.equals("N") && !type.equals("R") & !type.equals("Q")) {
+						System.out.println("Invalid value! Enter piece for promotion (B/N/R/Q)");
+						type = sc.nextLine().toUpperCase();	
+						}
 					chessMatch.replacePromotedPiece(type);						// E LANÇAR O VALOR INCLUIDO COMO ATRIBUTO NO METODO REPLACEPROMOTEDPIECE
 				}
 
