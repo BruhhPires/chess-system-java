@@ -20,7 +20,6 @@ public class Knight extends ChessPiece {
 	private boolean canMove(Position position) {  						  	 // DEFINIR COMO O "REI" DEVE SE MOVIMENTAR
 		ChessPiece p = (ChessPiece)getBoard().piece(position); 				 // 1- PEGA A PEÇA P QUE ESTÁ NESTA POSIÇÃO
 		return p == null || p.getColor() != getColor();						 // 2- VERIFICA SE A PEÇA É NULA OU TBM SE É ADVERSARIA, NESSES CASO PODE MOVER
-		
 	}
 
 	@Override
