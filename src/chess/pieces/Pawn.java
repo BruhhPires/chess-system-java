@@ -80,17 +80,17 @@ public class Pawn extends ChessPiece {
 			if(position.getRow() == 4) {												// SE A POSIÇÃO DA PEÇA PRETA É IGUAL A LINHA 4
 				Position left = new Position(position.getRow(), position.getColumn() -1);// PEGA APOSIÇÃO A ESQUERDA
 				if(getBoard().positionExists(left) && isThereOpponentPiece(left) && 
-					getBoard().piece(left) == chessMatch.getEnPassantVunerable());		 // TESTA SE A POSICAO A ESQUERDA ESTÁ OCUPADA, SE É OPOENTE E SE ESTÁ EM LE PASSANT VUNERABILI
+					getBoard().piece(left) == chessMatch.getEnPassantVunerable()) {	 // TESTA SE A POSICAO A ESQUERDA ESTÁ OCUPADA, SE É OPOENTE E SE ESTÁ EM LE PASSANT VUNERABILI
 					mat[left.getRow() +1][left.getColumn()] = true;						 // ENTÃO É VERDADEIRO E O PEÃO PODE PEGAR A POSIÇÃO ACIMA DA PEÇA A ESQUERDA
-			}
-			Position right = new Position(position.getRow(), position.getColumn() + 1);// PEGA APOSIÇÃO A ESQUERDA
-			if(getBoard().positionExists(right) && isThereOpponentPiece(right) && 
-				getBoard().piece(right) == chessMatch.getEnPassantVunerable()) {		 // TESTA SE A POSICAO A ESQUERDA ESTÁ OCUPADA, SE É OPOENTE E SE ESTÁ EM LE PASSANT VUNERABILI
-				mat[right.getRow() + 1][right.getColumn()] = true;						 // ENTÃO É VERDADEIRO E O PEÃO PODE PEGAR A POSIÇÃO ACIMA DA PEÇA A ESQUERDA
-			}
-		} return mat;
-	}	
-
+				}
+				Position right = new Position(position.getRow(), position.getColumn() + 1);// PEGA APOSIÇÃO A ESQUERDA
+				if(getBoard().positionExists(right) && isThereOpponentPiece(right) && 
+					getBoard().piece(right) == chessMatch.getEnPassantVunerable()) {		 // TESTA SE A POSICAO A ESQUERDA ESTÁ OCUPADA, SE É OPOENTE E SE ESTÁ EM LE PASSANT VUNERABILI
+					mat[right.getRow() + 1][right.getColumn()] = true;						 // ENTÃO É VERDADEIRO E O PEÃO PODE PEGAR A POSIÇÃO ACIMA DA PEÇA A ESQUERDA
+				}
+			} 
+		}	return mat;
+	}
 
 	@Override
 	public String toString() {

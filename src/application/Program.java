@@ -38,6 +38,11 @@ public class Program {
 				if (capturedPiece != null){ 									// SEMPRE QUE O METODO CAPTUREDPIECE FOR DIFERENTE DE NULLO,
 					captured.add(capturedPiece);								// SERÁ ADICIONADO A PEÇA A LISTA DE PEÇAS CAPTURADAS.
 				}
+				if(chessMatch.getPromoted() != null) {							// SE O GET PROMOTION ATIVAR O PROGRAMA VAI PEDIR QUE DIGITE A PEÇA
+					System.out.println("Enter piece for promotion (B/N/R/Q)");
+					String type = sc.nextLine();									
+					chessMatch.replacePromotedPiece(type);						// E LANÇAR O VALOR INCLUIDO COMO ATRIBUTO NO METODO REPLACEPROMOTEDPIECE
+				}
 
 			}
 			catch (ChessException e) {
