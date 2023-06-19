@@ -45,7 +45,7 @@ public class Pawn extends ChessPiece {
 			mat[p.getRow()][p.getColumn()] = true;									// ENTÃO É VERDADEIRO
 		}
 		p.setValues(position.getRow() +2, position.getColumn()); 							// ELA PODE MOVIMENTAR PRA CIMA 2 CASA
-		Position p2 = new Position(position.getRow() -1, position.getColumn());		// VERIFICA SE A CASA 1 TBM ESTÁ LIVRE
+		Position p2 = new Position(position.getRow()  + 1, position.getColumn());		// VERIFICA SE A CASA 1 TBM ESTÁ LIVRE
 		if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) && 
 			getBoard().positionExists(p2) && !getBoard().thereIsAPiece(p2) && getMoveCount() == 0){// SE A POSIÇÃO EXISTE,NÃO HÁ PEÇAS E A PEÇA NÃO TIVER MECHIDO AINDA
 			mat[p.getRow()][p.getColumn()] = true;									// ENTÃO É VERDADEIRO
